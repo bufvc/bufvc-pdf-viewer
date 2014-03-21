@@ -1,0 +1,172 @@
+
+#image-zoom-wrapper {
+    position: absolute;
+    text-align: left;
+    width: 99%;
+    height: 500px;
+    overflow: auto;
+    margin: 10px auto;
+    border: 1px solid #000;
+    background: #AAA url("./loader.gif") no-repeat 50% 50%;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    z-index: 9;
+}
+
+#image-zoom-wrapper.js-active {
+    cursor: move;
+    background-image: none;
+}
+
+.js-enabled #image-zoom-wrapper {
+    overflow: hidden;
+    position: relative;
+}
+
+.js-enabled #image-zoom-wrapper #image-zoom {
+    visibility: hidden;
+    position: relative;
+}
+
+#image-zoom-wrapper div.zoom-control {
+    width: 26px;
+    height: 26px;
+}
+
+#image-zoom-wrapper div.zoom-in,
+#image-zoom-wrapper div.zoom-out {
+    background: url("./zoom-in.png") no-repeat 0 0;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+#image-zoom-wrapper div.zoom-out {
+    background-image: url("./zoom-out.png");
+    top: 46px;
+}
+
+#image-zoom-wrapper div.zoom-off {
+    background-position: 0 100%;
+}
+
+@media(max-device-width: 480px) {
+
+    #image-zoom-wrapper {
+        border-width: 5px;
+    }
+
+    #image-zoom-wrapper div.zoom-in,
+    #image-zoom-wrapper div.zoom-out {
+        background-image: url("./zoom-in-104.png");
+        width: 104px;
+        height: 104px;
+    }
+
+    #image-zoom-wrapper div.zoom-out {
+        background-image: url("./zoom-out-104.png");
+        left: auto;
+        right: 10px;
+        top: 10px;
+    }
+
+}
+
+//--- Add
+#pdf-wrapper {
+    margin:0 auto;
+    position: relative;
+    width: 900px;
+    height: 500px;
+}
+#pdf-wrapper div.zoom-full {
+    background: url("./fullscreen.png") no-repeat 0 0;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    width: 26px;
+    height: 26px;
+    z-index: 19;
+}
+#pdf-wrapper div.download-pdf {
+    background: #55a2d5;
+    color: black;
+    position: absolute;
+    right: 30px;
+    top: 470px;
+    z-index: 19;
+}
+
+#pdf-wrapper div.download-pdf a{
+    text-decoration: none;
+    color: black;
+    font-style: italic;
+}
+//----
+
+.upload {
+	position: relative;
+	left:33%;
+	bottom: 0;
+	width: 40%;
+}
+
+form{
+	width: 100%;
+}
+
+input[type=file] {
+  position: relative;
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1px;
+}
+ 
+input[type=file]::-webkit-file-upload-button {
+  border: none;
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  width: 0;
+}
+ 
+/* "x::-webkit-file-upload-button" forces the rules to only apply to browsers that support this pseudo-element */
+x::-webkit-file-upload-button, input[type=file]:after {
+  content: 'Browse...';
+  display: inline-block;
+  left: 100%;
+  margin-left:3px;
+  padding: 3px 8px 2px;
+  position: relative;
+  -webkit-appearance: button;
+}
+
+input[type=submit] {
+  position: relative;
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: border-box;
+  margin-left: 80px;
+}
+ 
+input[type=submit]::-webkit-file-upload-button {
+  border: none;
+  margin-left: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  width: 0;
+}
+ 
+/* "x::-webkit-file-upload-button" forces the rules to only apply to browsers that support this pseudo-element */
+x::-webkit-file-upload-button, input[type=submit]:after {
+  content: 'Upload...';
+  display: inline-block;
+  left: 100%;
+  margin-left:30px;
+  padding: 3px 8px 2px;
+  position: relative;
+  -webkit-appearance: button;
+}
