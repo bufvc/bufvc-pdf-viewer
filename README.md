@@ -9,6 +9,13 @@ This script also allows you to upload a PDF to your server.
 PDFs will be converted  to images and displayed in your browser with full functionality, zoom-in, zoom-out,
 full-screen, pdf download and (pan) hold and drag.
 
+This system includes XPDF from Foo Labs <http://www.foolabs.com/xpdf/>.
+
+This system is released under the GPL version 2.
+
+Gviewer and the PHP code is copyright (C) 2014 British University Film and Video Council, http://bufvc.ac.uk.
+You can contact us by email here: pdf-viewer@bufvc.ac.uk
+
 = How to build gviewer
 The instructions below assume an Ubunbtu or Debian variant of Linux, but this has also been built on MacOS and Centos.
 
