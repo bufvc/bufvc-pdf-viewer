@@ -170,6 +170,9 @@ GString *get_output_filename(GString *);
 // Generate thumbnails for not highlighted pages...
 void get_page_thumbnail(int, GString *);
 
+// renumber a range of pages
+void renumber_pages(GString *);
+
 // struct option long_options[] =
 // {
 //     {"ignore-case", 0, 0, 'i'},
@@ -878,7 +881,7 @@ void get_page_thumbnail(int page, GString *PDFFilename) {
         ImagePage.read(tmpOutputFilename->getCString());
         ImagePage.resolutionUnits(PixelsPerInchResolution); 
         ImagePage.density(Geometry(72,72));
-        // Create thubnails...
+        // Create thumbnails...
         thumbsFilename = getPathFromPDFFilename(tmpOutputFilename, new GString(".jpg"));
         thumbsFilename->append("_thumb.jpg");
         Image PageThumbnails(ImagePage);
@@ -892,6 +895,32 @@ void get_page_thumbnail(int page, GString *PDFFilename) {
     
     // delete tmpOutputFilename;
     // delete thumbsFilename;
+}
+
+// GhostScript always outputs a range of pages using page numbers 1 to n
+// This function renumbers the files to match the range given on the command line
+void renumber_pages(GString *PDFFilename) {
+    GString *tmpOutputFilename;
+    
+    tmpOutputFilename = get_output_filename(PDFFilename);
+    int j = (lastPage - firstPage) + 1;
+    int r;
+    // perform the move backwards through the pages (i.e. n..1) to make sure no pages are overwritten
+    for (int i = lastPage; i >= firstPage; i--) {
+        ostringstream sstream;
+        sstream << j;
+        string fromPage = sstream.str();
+        // clear the stream
+        sstream.str("");
+        sstream.clear();
+        sstream << i;
+        string toPage = sstream.str();
+        // build the move command
+        string cmd = string("mv ") + tmpOutputFilename->getCString() + "_" + fromPage + ".jpg";
+        cmd += string(" ") + tmpOutputFilename->getCString() + "_" + toPage + ".jpg";
+        r = system(cmd.c_str());
+        j--;
+    }
 }
 
 GString *get_output_filename(GString *PDFFilename){
@@ -1030,6 +1059,9 @@ int main(int argc, char *argv[]) {
     if( debugging )
         fprintf( stderr, "first page: %d |  laste page: %d\n", firstPage, lastPage);
     
+    if (firstPage > 1 && lastPage > firstPage)
+       renumber_pages(PDFFilename);
+    
     // run a regular expression search in the text of the document for the terms...
     if (performSearch) {
         
@@ -1052,28 +1084,16 @@ int main(int argc, char *argv[]) {
     // generate the rest of the thumbnails that the highlighted did not.
     if ( ! onlyThumbnails ) {
         
-        int pagesToProcess = 1;
-        if( lastPage > 0 ) {
-            if ( firstPage != lastPage )
-                pagesToProcess = ( lastPage - firstPage ) + 1;
-        } else {
-            pagesToProcess = numPages;
-        }
-        
-        for(int page = 0; page < pagesToProcess; ++page) {
+        for(int page = firstPage; page <= lastPage; ++page) {
             doPageThumb = gTrue;
             for(size_t i = 0; i < pagesToHighlight.size(); ++i) {
-                 if(pagesToHighlight.at(i) == (page+1)) {
+                 if(pagesToHighlight.at(i) == (page)) {
                      doPageThumb = gFalse;
                      break;
                 }
             }
             if(doPageThumb) {
-                // check that the thumbnail has not been created already.
-                if (firstPage == lastPage)
-                    get_page_thumbnail(lastPage, PDFFilename);
-                else
-                    get_page_thumbnail(page+1, PDFFilename);
+                get_page_thumbnail(page, PDFFilename);
             }
         }
     }
